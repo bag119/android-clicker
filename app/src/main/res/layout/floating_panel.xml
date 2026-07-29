@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/panelRoot"
+    android:orientation="vertical"
+    android:background="#CC222222"
+    android:padding="6dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/dragHandle"
+        android:text="≡ 拖动"
+        android:textColor="#FFFFFF"
+        android:padding="4dp"
+        android:textSize="12sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout android:orientation="horizontal">
+        <Button android:id="@+id/btnRecord" android:text="录制" android:textSize="12sp"
+            android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <Button android:id="@+id/btnPlay" android:text="播放" android:textSize="12sp"
+            android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout android:orientation="horizontal">
+        <Button android:id="@+id/btnStopRec" android:text="停录" android:textSize="12sp"
+            android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <Button android:id="@+id/btnStopPlay" android:text="停播" android:textSize="12sp"
+            android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout android:orientation="horizontal">
+        <Button android:id="@+id/btnClear" android:text="清除" android:textSize="12sp"
+            android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/chkLoop"
+        android:text="循环"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/txtStatus"
+        android:text="就绪 | 点数:0"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>

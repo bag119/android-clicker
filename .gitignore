@@ -1,0 +1,15 @@
+# 编译产物
+build/
+.gradle/
+**/build/
+*.apk
+*.aar
+
+# 本地配置（每台机器不同，不入库）
+local.properties
+*.iml
+.idea/
+.DS_Store
+captures/
+.externalNativeBuild/
+.cxx/

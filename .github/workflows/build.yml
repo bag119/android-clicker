@@ -41,14 +41,19 @@ jobs:
         run: |
           export PATH=$JAVA_HOME/bin:$PATH
           # 默认密码兜底（≥6位），Secrets 可选不设
-          PWD="${KEYSTORE_PWD:-clicker2026}"
+          KPWD="${KEYSTORE_PWD:-clicker2026}"
           KEY="${KEY_PWD:-clicker2026}"
           keytool -genkeypair -v \
             -keystore "$KEYSTORE_FILE" \
             -alias "$KEY_ALIAS" \
             -keyalg RSA -keysize 2048 -validity 10000 \
-            -storepass "$PWD" -keypass "$KEY" \
+            -storepass "$KPWD" -keypass "$KEY" \
             -dname "CN=Dev,OU=Dev,O=Dev,L=City,S=State,C=CN"
+          # 把实际使用的密码同步给后续 Gradle 步骤，避免 keytool 与 gradle 读取不一致
+          {
+            echo "KEYSTORE_PWD=$KPWD"
+            echo "KEY_PWD=$KEY"
+          } >> "$GITHUB_ENV"
 
       - name: 编译 Release APK
         run: ./gradlew assembleRelease

@@ -1,7 +1,6 @@
 package com.creation.city.clicker
 
 import android.accessibilityservice.AccessibilityService
-import android.accessibilityservice.AccessibilityServiceInfo
 import android.accessibilityservice.GestureDescription
 import android.graphics.Path
 import android.os.Handler
@@ -16,16 +15,8 @@ class AutoClickerAccessibilityService : AccessibilityService() {
 
     override fun onServiceConnected() {
         instance = this
-        val info = serviceInfo ?: AccessibilityServiceInfo().apply {
-            eventTypes = AccessibilityEvent.TYPES_ALL_MASK
-            feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC
-            flags = AccessibilityServiceInfo.FLAG_CAN_PERFORM_GESTURES or
-                    AccessibilityServiceInfo.DEFAULT
-            notificationTimeout = 0
-        }
-        // 确保 FLAG_CAN_PERFORM_GESTURES 已设置（XML 里已声明 canPerformGestures=true）
-        info.flags = info.flags or AccessibilityServiceInfo.FLAG_CAN_PERFORM_GESTURES
-        serviceInfo = info
+        // canPerformGestures 已在 accessibility_service_config.xml 中声明为 true
+        // 系统会自动赋予 dispatchGesture 能力，无需额外设 flag
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {}

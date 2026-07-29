@@ -15,10 +15,26 @@ android {
         versionName '1.0'
     }
 
+    signingConfigs {
+        release {
+            def ksFile = System.getenv('KEYSTORE_FILE') ?: 'release.keystore'
+            def ksPwd = System.getenv('KEYSTORE_PWD')
+            def ksAlias = System.getenv('KEY_ALIAS') ?: 'clicker'
+            def keyPwd = System.getenv('KEY_PWD')
+            if (ksPwd != null && keyPwd != null) {
+                storeFile file(ksFile)
+                storePassword ksPwd
+                keyAlias ksAlias
+                keyPassword keyPwd
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 

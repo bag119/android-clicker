@@ -1,4 +1,4 @@
-name: Build Debug APK
+name: Build Release APK
 
 on:
   workflow_dispatch:        # 允许在 Actions 页面手动触发
@@ -8,6 +8,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      KEYSTORE_FILE: ${{ github.workspace }}/app/release.keystore
+      KEYSTORE_PWD: ${{ secrets.KEYSTORE_PWD }}
+      KEY_ALIAS: clicker
+      KEY_PWD: ${{ secrets.KEY_PWD }}
     steps:
       - name: 拉取代码
         uses: actions/checkout@v5
@@ -32,11 +37,21 @@ jobs:
         with:
           cache-disabled: true     # 关闭 Gradle 缓存，避免 cache 服务抖动导致报错
 
-      - name: 编译 Debug APK
-        run: ./gradlew assembleDebug
+      - name: 生成签名 keystore
+        run: |
+          export PATH=$JAVA_HOME/bin:$PATH
+          keytool -genkeypair -v \
+            -keystore "$KEYSTORE_FILE" \
+            -alias "$KEY_ALIAS" \
+            -keyalg RSA -keysize 2048 -validity 10000 \
+            -storepass "$KEYSTORE_PWD" -keypass "$KEY_PWD" \
+            -dname "CN=Dev,OU=Dev,O=Dev,L=City,S=State,C=CN"
+
+      - name: 编译 Release APK
+        run: ./gradlew assembleRelease
 
       - name: 上传 APK 产物
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: app-release
+          path: app/build/outputs/apk/release/app-release.apk

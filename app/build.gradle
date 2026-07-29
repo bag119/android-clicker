@@ -17,14 +17,11 @@ android {
 
     signingConfigs {
         release {
-            def ksFile = System.getenv('KEYSTORE_FILE') ?: 'release.keystore'
-            def ksPwd = System.getenv('KEYSTORE_PWD') ?: 'clicker2026'
-            def ksAlias = System.getenv('KEY_ALIAS') ?: 'clicker'
-            def keyPwd = System.getenv('KEY_PWD') ?: 'clicker2026'
-            storeFile file(ksFile)
-            storePassword ksPwd
-            keyAlias ksAlias
-            keyPassword keyPwd
+            // 自用工具：密码直接写死字面量，避免 CI 中 env/Secrets 优先级歧义导致 keystore 读写密码不一致
+            storeFile file(System.getenv('KEYSTORE_FILE') ?: 'release.keystore')
+            storePassword 'clicker2026'
+            keyAlias 'clicker'
+            keyPassword 'clicker2026'
         }
     }
 

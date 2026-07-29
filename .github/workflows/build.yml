@@ -10,9 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       KEYSTORE_FILE: ${{ github.workspace }}/app/release.keystore
-      KEYSTORE_PWD: ${{ secrets.KEYSTORE_PWD }}
-      KEY_ALIAS: clicker
-      KEY_PWD: ${{ secrets.KEY_PWD }}
     steps:
       - name: 拉取代码
         uses: actions/checkout@v5
@@ -40,20 +37,13 @@ jobs:
       - name: 生成签名 keystore
         run: |
           export PATH=$JAVA_HOME/bin:$PATH
-          # 默认密码兜底（≥6位），Secrets 可选不设
-          KPWD="${KEYSTORE_PWD:-clicker2026}"
-          KEY="${KEY_PWD:-clicker2026}"
+          # 密码直接写死字面量，与 app/build.gradle 保持一致，避免 env/Secrets 优先级歧义
           keytool -genkeypair -v \
             -keystore "$KEYSTORE_FILE" \
-            -alias "$KEY_ALIAS" \
+            -alias clicker \
             -keyalg RSA -keysize 2048 -validity 10000 \
-            -storepass "$KPWD" -keypass "$KEY" \
+            -storepass clicker2026 -keypass clicker2026 \
             -dname "CN=Dev,OU=Dev,O=Dev,L=City,S=State,C=CN"
-          # 把实际使用的密码同步给后续 Gradle 步骤，避免 keytool 与 gradle 读取不一致
-          {
-            echo "KEYSTORE_PWD=$KPWD"
-            echo "KEY_PWD=$KEY"
-          } >> "$GITHUB_ENV"
 
       - name: 编译 Release APK
         run: ./gradlew assembleRelease

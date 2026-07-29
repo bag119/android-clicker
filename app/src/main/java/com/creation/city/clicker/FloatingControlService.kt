@@ -269,7 +269,7 @@ class FloatingControlService : Service() {
 
     private fun buildNotification(): Notification =
         NotificationCompat.Builder(this, "clicker")
-            .setContentTitle("创城自动点击器")
+            .setContentTitle("自动点击器")
             .setContentText("控制器运行中")
             .setSmallIcon(android.R.drawable.ic_menu_compass)
             .build()

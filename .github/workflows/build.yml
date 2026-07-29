@@ -40,11 +40,14 @@ jobs:
       - name: 生成签名 keystore
         run: |
           export PATH=$JAVA_HOME/bin:$PATH
+          # 默认密码兜底（≥6位），Secrets 可选不设
+          PWD="${KEYSTORE_PWD:-clicker2026}"
+          KEY="${KEY_PWD:-clicker2026}"
           keytool -genkeypair -v \
             -keystore "$KEYSTORE_FILE" \
             -alias "$KEY_ALIAS" \
             -keyalg RSA -keysize 2048 -validity 10000 \
-            -storepass "$KEYSTORE_PWD" -keypass "$KEY_PWD" \
+            -storepass "$PWD" -keypass "$KEY" \
             -dname "CN=Dev,OU=Dev,O=Dev,L=City,S=State,C=CN"
 
       - name: 编译 Release APK

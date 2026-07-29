@@ -24,11 +24,14 @@ jobs:
       - name: 安装编译所需 SDK 组件
         run: sdkmanager "platforms;android-33" "build-tools;33.0.2"
 
+      - name: 赋予 gradlew 可执行权限
+        run: chmod +x gradlew
+
       - name: 编译 Debug APK
-        uses: gradle/gradle-build-action@v3
+        uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: 8.0     # 没有 wrapper jar，直接指定 Gradle 版本
           arguments: assembleDebug
+          cache-disabled: true     # 关闭 Gradle 缓存，避免 cache 服务抖动导致报错
 
       - name: 上传 APK 产物
         uses: actions/upload-artifact@v4
